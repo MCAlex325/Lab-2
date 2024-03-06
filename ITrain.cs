@@ -3,7 +3,7 @@
     internal interface ITrain
     {
         string Name { get; set; }
-        double MaxWeight { get; set; }
-        List<Carriage> Carriage { get; set; }
+        string routeNumber { get; set; }
+        List<Carriage> Carriages { get; set; }
     }
 }
