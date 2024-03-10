@@ -1,14 +1,59 @@
 ﻿namespace Lab_2
 {
-    internal class SleepingCarriage : Carriage
+    class SleepingCarriage : Carriage
     {
-        public int compartmentsCount {  get; set; }
-        public bool HasShowers {  get; set; }
+        public int CompartmentsCount { get; set; }
+        public bool HasShowers { get; set; }
+        public int MaxPassengers { get; private set; }
+        public int CurrentPassengers { get; set; }
 
-        public SleepingCarriage(string trainId, string Type, double trainLength, int compartmentsCount, bool hasShowers) : base(trainId, Type, trainLength)
+
+        public SleepingCarriage(string id, string type, double loadCapacity, int compartmentsCount, bool hasShowers)
+            : base(id, "Sleeping_Carriage")
         {
-            compartmentsCount = 90;
-            HasShowers = Random.Equals(true, false);
+            CompartmentsCount = compartmentsCount;
+            HasShowers = hasShowers;
+            MaxPassengers = 50;
+            CurrentPassengers = 0;
+        }
+
+        public bool AddPassengers(int passengers)
+        {
+            if (CurrentPassengers + passengers > MaxPassengers)
+            {
+                return false;
+            }
+            CurrentPassengers += passengers;
+            return true;
+        }
+        public void StationLoadPassengers()
+        {
+            Console.Write("Введіть кількість пасажирів для завантаження: ");
+            int passengers = int.Parse(Console.ReadLine());
+
+            if (AddPassengers(passengers))
+            {
+                Console.WriteLine($"Завантажено {passengers} пасажирів.");
+            }
+            else
+            {
+                Console.WriteLine("Кількість пасажирів не може перевищувати максимальну кількість місць.");
+            }
+        }
+        public void StationUnloadPassengers()
+        {
+            Console.Write("Введіть кількість пасажирів для висадки: ");
+            int passengers = int.Parse(Console.ReadLine());
+
+            if (passengers <= CurrentPassengers)
+            {
+                CurrentPassengers -= passengers;
+                Console.WriteLine($"Висаджено {passengers} пасажирів.");
+            }
+            else
+            {
+                Console.WriteLine("Ви не можете висадити більше пасажирів, ніж є в вагоні.");
+            }
         }
     }
 }

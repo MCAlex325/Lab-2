@@ -4,7 +4,13 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("DFsada");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+            Train train = new Train("Id");
+            train.InitializeTrain();
+
+            train.PrintTrainInfo();
+
         }
     }
 }

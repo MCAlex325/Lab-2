@@ -1,14 +1,24 @@
 ﻿namespace Lab_2
 {
-    internal class DiningCarriage : Carriage
+    class DiningCarriage : Carriage
     {
         public int TablesCount { get; set; }
         public bool HasKitchen { get; set; }
+        public int DiningSeats { get; private set; }
 
-        public DiningCarriage(string trainId, string Type, double trainLength, int tablesCount, bool HasKitchen) : base(trainId, Type, trainLength)
+
+        public DiningCarriage(string id, string type, int tablesCount, bool hasKitchen)
+            : base(id, "Dining_Carriage")
         {
-            TablesCount = tablesCount = 10;
-            HasKitchen = Random.Equals(true, false);
+            TablesCount = tablesCount = 40;
+            HasKitchen = hasKitchen = true;
+            DiningSeats = 40;
+        }
+
+        public double LoadFood(int passengers)
+        {
+            double foodPerPassenger = 0.5;
+            return passengers * foodPerPassenger;
         }
     }
 }

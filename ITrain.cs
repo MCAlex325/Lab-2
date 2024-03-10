@@ -1,9 +1,12 @@
 ﻿namespace Lab_2
 {
-    internal interface ITrain
+    public interface ITrain
     {
-        string Name { get; set; }
-        string routeNumber { get; set; }
-        List<Carriage> Carriages { get; set; }
+        string GetCarriageName { get; set; }
+        List<Carriage> Carriage { get; set; }
+
+        void AddCarriage(Carriage carriage);
+        void PrintTrainInfo();
+
     }
 }

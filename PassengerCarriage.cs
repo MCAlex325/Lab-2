@@ -1,33 +1,38 @@
 ﻿namespace Lab_2
 {
-    internal class PassengerCarriage : Carriage
+    public class PassengerCarriage : Carriage
     {
-        public int seatsCount {  get; set; }
-        public int countOfPassengers {  get; set; }
-        public string comfortLevel {  get; set; }
-        public PassengerCarriage(string trainId, int seatsCount, double trainLength) : base(trainId, "Passengers", trainLength)
+        public int SeatsCount { get; set; }
+        public int Passengers { get; set; }
+        public string ComfortLevel { get; set; }
+
+        public PassengerCarriage(string id, int seatsCount, string comfortLevel)
+            : base(id, "Passenger_Carriage")
         {
-            seatsCount = 100;
+            SeatsCount = 100;
+            ComfortLevel = comfortLevel;
         }
-        public void loadPassengers()
+
+        public void LoadPassengers()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            Console.Write("Введіть кількість пасажирів: ");
-            countOfPassengers = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Типи комфорту вагона: 1 - Economy, 2 - Business, 3 - Rich");
-            Console.Write("Введіть опис комфорту вагона: ");
-
-            comfortLevel = Console.ReadLine();
-
-            Console.WriteLine($"Тип комфортних місць у вагоні {comfortLevel}");
-
-            if (countOfPassengers > seatsCount)
+            string comfortlevel;
+            int passengers;
+            do
             {
-                Console.WriteLine("Кількість пасажирів більша за кількість місць у вагонах");
-                countOfPassengers = seatsCount;
-            }
+                Console.Write("Введіть клас вагону: (Наприклад - 'Business'): \n\n");
+                comfortlevel = Console.ReadLine();
+                Console.Clear();
+                Console.Write("Введіть кількість пасажирів: \n\n");
+                passengers = Convert.ToInt32(Console.ReadLine());
+                if (passengers > SeatsCount)
+                {
+                    Console.WriteLine($"\nКількість пасажирів не може перевищувати кількість місць. \n\nМаксимальна кількість місць {SeatsCount}");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            } while (passengers > SeatsCount);
+            Passengers = passengers;
+            ComfortLevel = comfortlevel;
         }
     }
 }
