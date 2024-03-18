@@ -8,52 +8,12 @@
         public int CurrentPassengers { get; set; }
 
 
-        public SleepingCarriage(string id, string type, double loadCapacity, int compartmentsCount, bool hasShowers)
+        public SleepingCarriage(string id, string type, double currentPassengers, int compartmentsCount, bool hasShowers)
             : base(id, "Sleeping_Carriage")
         {
             CompartmentsCount = compartmentsCount;
             HasShowers = hasShowers;
-            MaxPassengers = 50;
             CurrentPassengers = 0;
-        }
-
-        public bool AddPassengers(int passengers)
-        {
-            if (CurrentPassengers + passengers > MaxPassengers)
-            {
-                return false;
-            }
-            CurrentPassengers += passengers;
-            return true;
-        }
-        public void StationLoadPassengers()
-        {
-            Console.Write("Введіть кількість пасажирів для завантаження: ");
-            int passengers = int.Parse(Console.ReadLine());
-
-            if (AddPassengers(passengers))
-            {
-                Console.WriteLine($"Завантажено {passengers} пасажирів.");
-            }
-            else
-            {
-                Console.WriteLine("Кількість пасажирів не може перевищувати максимальну кількість місць.");
-            }
-        }
-        public void StationUnloadPassengers()
-        {
-            Console.Write("Введіть кількість пасажирів для висадки: ");
-            int passengers = int.Parse(Console.ReadLine());
-
-            if (passengers <= CurrentPassengers)
-            {
-                CurrentPassengers -= passengers;
-                Console.WriteLine($"Висаджено {passengers} пасажирів.");
-            }
-            else
-            {
-                Console.WriteLine("Ви не можете висадити більше пасажирів, ніж є в вагоні.");
-            }
         }
     }
 }

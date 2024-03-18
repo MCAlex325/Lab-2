@@ -6,7 +6,7 @@
         public int Passengers { get; set; }
         public string ComfortLevel { get; set; }
 
-        public PassengerCarriage(string id, int seatsCount, string comfortLevel)
+        public PassengerCarriage(string id, string type, int seatsCount, string comfortLevel)
             : base(id, "Passenger_Carriage")
         {
             SeatsCount = 100;

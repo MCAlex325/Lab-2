@@ -6,7 +6,6 @@
         public string GetCarriageName { get; set; }
         public double LoadCapacity { get; set; }
         public MaterialType Material { get; set; }
-        public double Weight { get; set; }
         public List<Carriage> Carriage { get; set; }
         public double TotalLoad { get; set; }
         public List<FreightCarriage> FreightCarriages { get; set; }
@@ -31,18 +30,17 @@
             switch (type)
             {
                 case 1:
+
                     id = (Carriage.Count + 1).ToString();
-                    PassengerCarriage passengerCarriage = new PassengerCarriage(id, 30, comfortLevel);
+                    PassengerCarriage passengerCarriage = new PassengerCarriage(id, "PassengerCarriage", 30, comfortLevel);
                     passengerCarriage.LoadPassengers();
                     Carriage.Add(passengerCarriage);
                     break;
 
                 case 2:
-                    Console.Write("Виберіть тип матеріалу:");
-                    foreach (var material in Enum.GetValues(typeof(MaterialType)))
-                    {
-                        Console.WriteLine($"{(int)material}. {(string)material}");
-                    }
+
+                    Console.WriteLine("Виберіть тип матеріалу: Wood = 1, Metal = 2, Coal = 3, Oil = 4: ");
+
                     MaterialType chosenMaterial = (MaterialType)Enum.Parse(typeof(MaterialType), Console.ReadLine());
 
                     string materialName = chosenMaterial.ToString();
@@ -51,24 +49,17 @@
                     double cargoWeight = Convert.ToDouble(Console.ReadLine());
 
                     double maxLoad = LoadCapacity;
+
+                    id = (Carriage.Count + 1).ToString();
+                    FreightCarriage freightCarriage = new FreightCarriage(id, maxLoad, chosenMaterial);
+
+                    Carriage.Add(freightCarriage);
+                    Console.WriteLine($"Вантаж {materialName} завантажено.");
                     
-
-                    if (cargoWeight > maxLoad)
-                    {
-                        Console.WriteLine($"Вантаж не може перевищувати максимальну вантажопідйомність вагона для {materialName}.");
-                    }
-                    else
-                    {
-                        id = (Carriage.Count + 1).ToString();
-                        FreightCarriage freightCarriage = new FreightCarriage(id, maxLoad, chosenMaterial);
-
-                        freightCarriage.Load = cargoWeight;
-                        Carriage.Add(freightCarriage);
-                        Console.WriteLine($"Вантаж {materialName} завантажено.");
-                    }
                     break;
 
                 case 3:
+
                     if (loadCapacity > 500)
                     {
                         Console.WriteLine("Завантаження їжі не може перевищувати 500 кг.");
@@ -76,18 +67,18 @@
                     }
                     id = (Carriage.Count + 1).ToString();
                     DiningCarriage diningCarriage = new DiningCarriage(id, "Dining", tablesCount, hasKitchen);
-                    Console.Write("Введіть кількість пасажирів для завантаження їжі: ");
+                    Console.Write("Введіть кількість пасажирів: ");
                     int foodPassengers = int.Parse(Console.ReadLine());
                     diningCarriage.LoadFood(foodPassengers);
                     Carriage.Add(diningCarriage);
                     break;
 
                 case 4:
+
                     id = (Carriage.Count + 1).ToString();
                     SleepingCarriage sleepingCarriage = new SleepingCarriage(id, "Sleeping", loadCapacity, compartmentsCount, hasShowers);
-                    Console.Write("Введіть кількість пасажирів для завантаження: ");
+                    Console.Write("Введіть кількість пасажирів: ");
                     int sleepPassengers = int.Parse(Console.ReadLine());
-                    sleepingCarriage.AddPassengers(sleepPassengers);
                     Carriage.Add(sleepingCarriage);
                     break;
 
@@ -111,7 +102,6 @@
                 switch (userInput)
                 {
                     case "1":
-                        ShowCarriages();
 
                         Console.Write("Введіть номер вагону, який ви хочете видалити: ");
                         string carriageInput = Console.ReadLine();
@@ -136,16 +126,6 @@
                         Console.WriteLine("Невідома команда. Будь ласка, введіть 1, щоб видалити вагон, або 2, щоб завершити.");
                         break;
                 }
-            }
-        }
-
-        public void ShowCarriages()
-        {
-            Console.WriteLine("Список всіх вагонів:");
-            foreach (Carriage carriage in Carriage)
-            {
-                Console.Clear();
-                Console.WriteLine($"ID: {carriage.CarriageId}\nТип: {carriage.CarriageType}");
             }
         }
 
@@ -190,8 +170,8 @@
         {
             Console.WriteLine($"Train Name: {GetCarriageName}");
             
-            Console.WriteLine($"Кількість вагонів: {Carriage.Count}");
-            Console.WriteLine("Інформація про вагони:");
+            Console.WriteLine($"\nКількість вагонів: {Carriage.Count}");
+            Console.WriteLine("\nІнформація про вагони:");
             double totalLoad = 0;
             double totalWeight = 0;
             double totalLength = 0;
@@ -203,40 +183,40 @@
                 switch (carriage)
                 {
                     case PassengerCarriage passengerCarriage:
-                        cargoType = "Люди";
+                        cargoType = "\nЛюди";
                         totalPassengers += passengerCarriage.Passengers;
                         finalComfortLevel = passengerCarriage.ComfortLevel;
+                        Console.WriteLine($"\nКлас пасажирського вагону: {finalComfortLevel}");
                         break;
                     case FreightCarriage freightCarriage:
                         cargoType = freightCarriage.Material.ToString();
 
-                        totalLoad += freightCarriage.Load;
+                        totalLoad += freightCarriage.MaxLoad;
 
                         break;
                     case DiningCarriage diningCarriage:
-                        cargoType = "Їжа";
+                        cargoType = "\nЇжа";
                         totalLoad += diningCarriage.LoadFood(diningCarriage.DiningSeats);
-                        Console.WriteLine($"Кількість столів: {diningCarriage.TablesCount}");
-                        Console.WriteLine($"Наявність кухні: {diningCarriage.HasKitchen}");
+                        Console.WriteLine($"\nКількість столів: {diningCarriage.TablesCount}");
+                        Console.WriteLine($"\nНаявність кухні: {diningCarriage.HasKitchen}");
                         break;
                     case SleepingCarriage sleepingCarriage:
                         cargoType = "Люди";
                         totalPassengers += sleepingCarriage.CurrentPassengers;
-                        Console.WriteLine($"Наявність душу: {sleepingCarriage.HasShowers}");
-                        Console.WriteLine($"Кількість пасажирів: {sleepingCarriage.MaxPassengers}");
+                        Console.WriteLine($"\nНаявність душу: {sleepingCarriage.HasShowers}");
+                        Console.WriteLine($"\nКількість пасажирів: {sleepingCarriage.MaxPassengers}");
                         break;
                     default:
                         Console.WriteLine("Невідомий тип вагону.");
                         break;
                 }
-                Console.WriteLine($"ID вагону: {carriage.CarriageId}, Тип: {carriage.CarriageType}, Вага: {carriage.CarriageWeight}, Довжина: {carriage.TrainLength}, Тип матеріалу: {cargoType}");
+                Console.WriteLine($"\nID вагону: {carriage.CarriageId}, Тип: {carriage.CarriageType}, Вага: {carriage.CarriageWeight}, Довжина: {carriage.TrainLength}");
                 totalWeight += carriage.CarriageWeight;
                 totalLength += carriage.TrainLength;
             }
-            Console.WriteLine($"Загальна довжина потягу: {totalLength} метрів");
-            Console.WriteLine($"Клас пасажирських вагонів: {finalComfortLevel}");
-            Console.WriteLine($"Загальна кількість пасажирів: {totalPassengers}");
-            Console.WriteLine($"Загальна вага потягу: {totalWeight} тон");
+            Console.WriteLine($"\nЗагальна довжина потягу: {totalLength} метрів\n");
+            Console.WriteLine($"Загальна кількість пасажирів: {totalPassengers}\n");
+            Console.WriteLine($"Загальна вага потягу: {totalWeight} тон\n");
         }
     }
 }
